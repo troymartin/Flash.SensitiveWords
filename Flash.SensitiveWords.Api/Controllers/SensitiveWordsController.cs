@@ -5,6 +5,7 @@ namespace Flash.SensitiveWords.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Produces("application/json")]
     public class SensitiveWordsController : ControllerBase
     {
         
@@ -18,17 +19,36 @@ namespace Flash.SensitiveWords.Api.Controllers
             _sensitiveWordsService = sensitiveWordsService;
         }
 
+        /// <summary>
+        /// An endpoint to sanitize text of prohibited values
+        /// </summary>
+        /// <param name="words">query parameter of words/s to sanitize</param>
+        /// <returns></returns>
+        /// <response code="200">Returns the sanitized words</response>
+        /// <response code="400">If the words input is null</response>
+        /// <response code="500">If an exception occurs</response>
         [HttpGet(Name = "GetSanitizedWords")]
-        public IActionResult Get(string words)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> Get(string words)
         {
-            if (string.IsNullOrWhiteSpace(words))
+            try
             {
-                return BadRequest("Query parameter words cannot be empty");
+                if (string.IsNullOrWhiteSpace(words))
+                {
+                    return BadRequest("Query parameter words cannot be empty");
+                }
+
+                var sanitizedWords = await _sensitiveWordsService.SanitizeWords(words);
+
+                return Ok(sanitizedWords);
             }
-
-            var sanitizedWords = _sensitiveWordsService.SanitizeWords(words);
-
-            return Ok(sanitizedWords);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,ex.Message);
+                return StatusCode(500,ex.Message);
+            }
         }
     }
 }

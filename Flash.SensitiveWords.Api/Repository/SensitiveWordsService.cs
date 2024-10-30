@@ -45,5 +45,10 @@ namespace Flash.SensitiveWords.Api.Repository
             }
             return word;
         }
+
+        public Task InsertSensitiveWord(string word)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
