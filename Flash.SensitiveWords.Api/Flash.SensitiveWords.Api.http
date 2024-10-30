@@ -1,0 +1,6 @@
+@Flash.SensitiveWords.Api_HostAddress = http://localhost:5033
+
+GET {{Flash.SensitiveWords.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
