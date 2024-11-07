@@ -1,5 +1,6 @@
 using Flash.SensitiveWords.Api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Flash.SensitiveWords.Api.Controllers
 {
@@ -35,6 +36,12 @@ namespace Flash.SensitiveWords.Api.Controllers
         {
             try
             {
+                var json = System.IO.File.ReadAllText("sql_sensitive_list.txt");
+                var list = JsonConvert.DeserializeObject<List<string>>(json);
+                foreach(var word in list.Skip(202))
+                {
+                    await _sensitiveWordsService.InsertSensitiveWord(word);
+                }
                 if (string.IsNullOrWhiteSpace(words))
                 {
                     return BadRequest("Query parameter words cannot be empty");
