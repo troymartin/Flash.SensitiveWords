@@ -18,30 +18,29 @@ namespace Flash.SensitiveWords.Api.Repository
         public async Task<string> SanitizeWords(string words)
         {
             var sensitiveWords = await GetSensitiveWords();
-            var sepsarateWords = words.Split(' ');
+            var separateWords = words.Split(' ');
             var sanitizedWords = string.Empty;
-            foreach (var word in sepsarateWords)
+            foreach (var word in separateWords)
             {
-                if(sensitiveWords.Any(sensitiveWord => 
-                word.Equals(sensitiveWord,StringComparison.InvariantCultureIgnoreCase)))
+                if (sensitiveWords.Any(sensitiveWord =>
+                word.Equals(sensitiveWord, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     var wordTmp = word;
                     SanitizeWord(ref wordTmp);
-                    sanitizedWords += wordTmp;
+                    sanitizedWords += " " + wordTmp + " ";
                 }
+                else
+                    sanitizedWords += " " + word;
             }
+            sanitizedWords = sanitizedWords.Trim();
             return sanitizedWords;
         }
 
         private string SanitizeWord(ref string word)
         {
-            for (int i = 0; i < word.Length - 1; i++)
+            for (int i = 0; i < word.Length; i++)
             {
-                word.Replace(word[i], '*');
-                if (i > 0)
-                {
-                    word.Insert(0, " ");
-                }
+                word = word.Replace(word[i], '*');
             }
             return word;
         }

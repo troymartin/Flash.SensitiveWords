@@ -1,4 +1,9 @@
+using Flash.SensitiveWords.Api.Interfaces;
+using Flash.SensitiveWords.Api.Repository;
+using Flash.SensitiveWords.Data;
+using Flash.SensitiveWords.Data.Interfaces;
 using Microsoft.OpenApi.Models;
+using System.Configuration;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddTransient(typeof(ISensitiveWordsService),typeof(SensitiveWordsService));
+builder.Services.AddTransient(typeof(IDbAccess), typeof(SqlDataAccess));
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo

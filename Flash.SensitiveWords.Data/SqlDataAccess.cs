@@ -1,11 +1,16 @@
 ﻿using Flash.SensitiveWords.Data.Interfaces;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Protocols;
 using System.Data;
 
 namespace Flash.SensitiveWords.Data
 {
-    public class SqlDataAccess(string connectionString) : IDbAccess
+    public class SqlDataAccess(IConfiguration config) : IDbAccess
     {
+        
+        private string connectionString => config.GetConnectionString("Flash");
+
         /// <summary>
         /// 
         /// </summary>
@@ -46,7 +51,7 @@ namespace Flash.SensitiveWords.Data
                 var prohibitedWords = new List<string>();
                 while (reader.Read())
                 {
-                    var prohibitedWord = reader.GetString(0);
+                    var prohibitedWord = reader.GetString(1);
                     if (!string.IsNullOrEmpty(prohibitedWord))
                     {
                         prohibitedWords.Add(prohibitedWord);

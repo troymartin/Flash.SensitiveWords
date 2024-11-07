@@ -8,6 +8,6 @@ namespace Flash.SensitiveWords.Data
 {
     internal struct SqlQueries
     {
-        public static readonly string GetSanitizedWords = "exec ";
+        public static readonly string GetSanitizedWords = "spGetSensitiveWords";
     }
 }
