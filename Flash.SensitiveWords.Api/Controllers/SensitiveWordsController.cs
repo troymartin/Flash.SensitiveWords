@@ -36,12 +36,7 @@ namespace Flash.SensitiveWords.Api.Controllers
         {
             try
             {
-                var json = System.IO.File.ReadAllText("sql_sensitive_list.txt");
-                var list = JsonConvert.DeserializeObject<List<string>>(json);
-                foreach(var word in list.Skip(202))
-                {
-                    await _sensitiveWordsService.InsertSensitiveWord(word);
-                }
+                
                 if (string.IsNullOrWhiteSpace(words))
                 {
                     return BadRequest("Query parameter words cannot be empty");
@@ -59,12 +54,12 @@ namespace Flash.SensitiveWords.Api.Controllers
         }
 
         /// <summary>
-        /// An endpoint to sanitize text of prohibited values
+        /// An endpoint to insert a sensitiv e word
         /// </summary>
-        /// <param name="words">query parameter of words/s to sanitize</param>
+        /// <param name="word">word to insert</param>
         /// <returns></returns>
-        /// <response code="200">Returns the sanitized words</response>
-        /// <response code="400">If the words input is null</response>
+        /// <response code="204">Returns the inserted word</response>
+        /// <response code="400">If the word input is null</response>
         /// <response code="500">If an exception occurs</response>
         [HttpPut(Name = "InsertSanitizedWord")]
         [ProducesResponseType(201)]
