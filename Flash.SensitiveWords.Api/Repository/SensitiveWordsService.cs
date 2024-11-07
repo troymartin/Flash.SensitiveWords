@@ -3,8 +3,17 @@ using Flash.SensitiveWords.Data.Interfaces;
 
 namespace Flash.SensitiveWords.Api.Repository
 {
+    /// <summary>
+    /// A service to manage sensitive words
+    /// </summary>
+    /// <param name="dataAccess"></param>
     public class SensitiveWordsService(IDbAccess dataAccess) : ISensitiveWordsService
     {
+        /// <summary>
+        /// Gets sensitive words from the database
+        /// </summary>
+        /// <returns>A List of sensitive words</returns>
+        /// <exception cref="ApplicationException"></exception>
         private async Task<List<string>> GetSensitiveWords()
         {
             var sensitiveWords = await dataAccess.SelectProhibitedWords();
@@ -15,6 +24,11 @@ namespace Flash.SensitiveWords.Api.Repository
             return sensitiveWords;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="words"></param>
+        /// <returns></returns>
         public async Task<string> SanitizeWords(string words)
         {
             var sensitiveWords = await GetSensitiveWords();
@@ -45,9 +59,24 @@ namespace Flash.SensitiveWords.Api.Repository
             return word;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="word"></param>
+        /// <returns></returns>
         public async Task<bool> InsertSensitiveWord(string word)
         {
             return await dataAccess.InsertProhibitedWord(word);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="word"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteSensitiveWord(string word)
+        {
+            return await dataAccess.DeleteSensitiveWord(word);
         }
     }
 }

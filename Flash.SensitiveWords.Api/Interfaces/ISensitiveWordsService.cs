@@ -4,5 +4,6 @@
     {
         Task<string> SanitizeWords(string words);
         Task<bool> InsertSensitiveWord(string word);
+        Task<bool> DeleteSensitiveWord(string word);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Flash.SensitiveWords.Data.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Protocols;
 using System.Data;
 
 namespace Flash.SensitiveWords.Data
@@ -102,6 +101,30 @@ namespace Flash.SensitiveWords.Data
             }
         }
 
-
+        public async Task<bool> DeleteSensitiveWord(string word)
+        {
+            var connection = GetConnection();
+            try
+            {
+                var sqlCommand = GetCommand(SqlQueries.DeleteSanitizedWord, CommandType.StoredProcedure, connection);
+                sqlCommand.Parameters.AddWithValue("@word", word);
+                await connection.OpenAsync();
+                var result = Convert.ToBoolean(await sqlCommand.ExecuteNonQueryAsync());
+                return result;
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                connection.Close();
+                connection.Dispose();
+            }
+        }
     }
 }

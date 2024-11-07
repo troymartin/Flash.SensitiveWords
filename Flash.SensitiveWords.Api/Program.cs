@@ -3,7 +3,6 @@ using Flash.SensitiveWords.Api.Repository;
 using Flash.SensitiveWords.Data;
 using Flash.SensitiveWords.Data.Interfaces;
 using Microsoft.OpenApi.Models;
-using System.Configuration;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
