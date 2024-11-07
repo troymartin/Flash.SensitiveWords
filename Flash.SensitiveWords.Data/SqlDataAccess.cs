@@ -40,9 +40,10 @@ namespace Flash.SensitiveWords.Data
 
         public async Task<List<string>> SelectProhibitedWords()
         {
+            var connection = GetConnection();
+
             try
             {
-                var connection = GetConnection();
                 var sqlCommand = GetCommand(SqlQueries.GetSanitizedWords, CommandType.StoredProcedure, connection);
 
                 await connection.OpenAsync();
@@ -68,13 +69,18 @@ namespace Flash.SensitiveWords.Data
             {
                 throw;
             }
+            finally
+            {
+                connection.Close();
+                connection.Dispose();
+            }
         }
 
         public async Task<bool> InsertProhibitedWord(string word)
         {
+            var connection = GetConnection();
             try
             {
-                var connection = GetConnection();
                 var sqlCommand = GetCommand(SqlQueries.InsertSanitizedWord, CommandType.StoredProcedure, connection);
                 sqlCommand.Parameters.AddWithValue("@word", word);
                 await connection.OpenAsync();
@@ -88,6 +94,11 @@ namespace Flash.SensitiveWords.Data
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                connection.Close();
+                connection.Dispose();
             }
         }
 
