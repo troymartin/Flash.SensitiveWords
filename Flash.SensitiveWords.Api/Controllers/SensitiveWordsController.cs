@@ -24,9 +24,9 @@ namespace Flash.SensitiveWords.Api.Controllers
         /// An endpoint to sanitize text of prohibited values
         /// </summary>
         /// <param name="words">query parameter of words/s to sanitize</param>
-        /// <returns></returns>
+        
         /// <response code="200">Returns the sanitized words</response>
-        /// <response code="400">If the words input is null</response>
+       
         /// <response code="500">If an exception occurs</response>
         [HttpGet(Name = "GetSanitizedWords")]
         [ProducesResponseType(200)]
@@ -57,9 +57,9 @@ namespace Flash.SensitiveWords.Api.Controllers
         /// An endpoint to insert a sensitiv e word
         /// </summary>
         /// <param name="word">word to insert</param>
-        /// <returns></returns>
+        
         /// <response code="204">Returns the inserted word</response>
-        /// <response code="400">If the word input is null</response>
+        
         /// <response code="500">If an exception occurs</response>
         [HttpPut(Name = "InsertSanitizedWord")]
         [ProducesResponseType(201)]
