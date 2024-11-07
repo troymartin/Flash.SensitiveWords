@@ -3,6 +3,6 @@
     public interface ISensitiveWordsService
     {
         Task<string> SanitizeWords(string words);
-        Task InsertSensitiveWord(string word);
+        Task<bool> InsertSensitiveWord(string word);
     }
 }

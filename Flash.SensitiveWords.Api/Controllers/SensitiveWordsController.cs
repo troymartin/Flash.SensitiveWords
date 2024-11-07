@@ -50,5 +50,36 @@ namespace Flash.SensitiveWords.Api.Controllers
                 return StatusCode(500,ex.Message);
             }
         }
+
+        /// <summary>
+        /// An endpoint to sanitize text of prohibited values
+        /// </summary>
+        /// <param name="words">query parameter of words/s to sanitize</param>
+        /// <returns></returns>
+        /// <response code="200">Returns the sanitized words</response>
+        /// <response code="400">If the words input is null</response>
+        /// <response code="500">If an exception occurs</response>
+        [HttpPut(Name = "InsertSanitizedWord")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> Put([FromBody]string word)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(word))
+                {
+                    return BadRequest("Parameter word cannot be empty");
+                }
+
+                var success = await _sensitiveWordsService.InsertSensitiveWord(word);
+                return Created();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

@@ -45,9 +45,9 @@ namespace Flash.SensitiveWords.Api.Repository
             return word;
         }
 
-        public Task InsertSensitiveWord(string word)
+        public async Task<bool> InsertSensitiveWord(string word)
         {
-            throw new NotImplementedException();
+            return await dataAccess.InsertProhibitedWord(word);
         }
     }
 }

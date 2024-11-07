@@ -9,7 +9,7 @@ namespace Flash.SensitiveWords.Data
     public class SqlDataAccess(IConfiguration config) : IDbAccess
     {
         
-        private string connectionString => config.GetConnectionString("Flash");
+        private string connectionString => config.GetConnectionString("Flash")!;
 
         /// <summary>
         /// 
@@ -69,5 +69,28 @@ namespace Flash.SensitiveWords.Data
                 throw;
             }
         }
+
+        public async Task<bool> InsertProhibitedWord(string word)
+        {
+            try
+            {
+                var connection = GetConnection();
+                var sqlCommand = GetCommand(SqlQueries.InsertSanitizedWord, CommandType.StoredProcedure, connection);
+                sqlCommand.Parameters.AddWithValue("@word", word);
+                await connection.OpenAsync();
+                var result = Convert.ToBoolean(await sqlCommand.ExecuteNonQueryAsync());
+                return result;
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
     }
 }
